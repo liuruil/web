@@ -47,3 +47,52 @@ function clone(obj, deep) {
     // 原始类型和函数直接返回
     return obj
 }
+
+/**
+ * @description: 函数防抖(高阶函数:函数的返回值是函数)
+ * @param {*} callback 回调函数
+ * @param {*} time 延迟时间
+ * @return {*} 函数
+ */
+function debounce(callback, time) {
+    let timer = null
+    return function () {
+        clearTimeout(timer)
+        const _args = arguments
+        timer = setTimeout(() => {
+            callback.apply(null, _args)
+        }, time)
+    }
+}
+
+
+/**
+ * @description: 函数节流
+ * @param {*} callback 回调函数
+ * @param {*} time 间隔时间
+ * @param {*} immediately 是否立即执行
+ * @return {*} 函数
+ */
+function throttle(callback, time, immediately = true) {
+    if (immediately) {
+        let timer;
+        return function () {
+            if (!timer || (Date.now() - timer) >= time) {
+                callback.apply(null, arguments)
+                timer = Date.now()
+            }
+        }
+    } else {
+        let timer;
+        return function () {
+            if (timer) {
+                return;
+            }
+            const _argus = arguments
+            timer = setTimeout(() => {
+                callback.apply(null, _argus)
+                timer = null
+            }, time)
+        }
+    }
+}
