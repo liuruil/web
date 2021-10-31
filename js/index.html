@@ -10,36 +10,7 @@
 
 <body>
     <script>
-        function throttle(callback, time, immediately = true) {
-            if (immediately) {
-                let timer;
-                return function () {
-                    if (!timer || (Date.now() - timer) >= time) {
-                        callback.apply(null, arguments)
-                        timer = Date.now()
-                    }
-                }
-            } else {
-                let timer;
-                return function () {
-                    if (timer) {
-                        return;
-                    }
-                    const _argus = arguments
-                    timer = setTimeout(() => {
-                        callback.apply(null, _argus)
-                        timer = null
-                    }, time)
-                }
-            }
 
-        }
-        const handle = throttle((number) => {
-            console.log(number)
-        }, 1000)
-        window.onresize = function () {
-            handle(1)
-        }
     </script>
 </body>
 
