@@ -101,17 +101,7 @@ const pro = new MyPromise((resolved, rejected) => {
 pro.then((data) => {
     console.log(data)
 })
-pro.then((data) => {
-    console.log(data)
-})
 pro.catch((data) => {
     console.log('catch', data)
 })
-pro.catch((data) => {
-    console.log('catch', data)
-})
-pro.catch((data) => {
-    console.log('catch', data)
-})
-
 console.log(pro)
