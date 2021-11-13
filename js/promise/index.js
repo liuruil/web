@@ -54,4 +54,4 @@ const MyPromise = (function () {
 const pro = new MyPromise((resolved, rejected) => {
     throw new Error('哈哈哈')
 })
-console.log(pro)
+console.log(pro);
