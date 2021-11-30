@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkvuessr=self.webpackChunkvuessr||[]).push([[465],{465:(e,s,t)=>{t.r(s),t.d(s,{default:()=>r});var u=function(){var e=this,s=e.$createElement;return(e._self._c||s)("div",[e._v("Aboutye")])};u._withStripped=!0;var n=(0,t(900).Z)({},u,[],!1,null,null,null);n.options.__file="src/components/about.vue";const r=n.exports}}]);
