@@ -9,8 +9,9 @@ import app from './eventBus'
 Vue.prototype.$bus = app
 Vue.config.productionTip = false
 Vue.prototype.$http = http
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+console.log(vm)
