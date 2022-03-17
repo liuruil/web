@@ -170,7 +170,7 @@ const MyPromise = (function () {
          * @returns 
          */
         _changeState(newState, value) {
-            if (this._state !== PENDING) {
+            if (this._state !== PENDING) { //已经是已决状态
                 return;
             }
             this._state = newState;
@@ -205,7 +205,7 @@ const MyPromise = (function () {
             while (this._handle[0]) {
                 // 处理队列函数并且删除
                 this._runOneHandle(this._handle[0])
-                this._handle.shift()
+                this._handle.shift() //从数组中删除第一个元素 改变原数组
             }
         }
 

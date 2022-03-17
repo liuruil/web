@@ -98,7 +98,7 @@ function throttle(callback, time, immediately = true) {
 }
 
 /**
- * 根据id找到数组中的value为id的对象
+ * !根据id找到数组中的value为id的对象
  * @param {Number} id 
  * @param {Array} arr 
  * @param {String} childName 默认值是children
@@ -117,4 +117,27 @@ function getItemByArray(id, arr, childName = 'children') {
         return result;
     }
     return null;
+}
+
+/**
+ * @description: 还原store的数据
+ */
+function initStoreData() {
+    // 在页面加载时读取sessionStorage里的状态信息
+    // 作用：防止页面刷新丢失store数据
+    if (sessionStorage.getItem('store')) {
+        this.$store.replaceState(
+            Object.assign(
+                {},
+                this.$store.state,
+                JSON.parse(sessionStorage.getItem('store'))
+            )
+        );
+    }
+    // 在页面刷新时将store里的信息保存到sessionStorage里
+    window.addEventListener('beforeunload', () => {
+        if (this.$route.name !== loginRouterName) {
+            sessionStorage.setItem('store', JSON.stringify(this.$store.state));
+        }
+    });
 }
