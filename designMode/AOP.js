@@ -26,7 +26,7 @@ Function.prototype.after = function (afterFn) {
 }
 
 // 上面的AOP实现是在Function.prototype上添加before和after方法，
-// 但许多人不喜欢这种污染原型的方式，那么我们可以做一些变通，
+// 如果不喜欢这种污染原型的方式，那么我们可以做一些变通，
 // 把原函数和新函数都作为参数传入before或者after方法：
 
 // 2. 不污染原型链的方法
