@@ -144,6 +144,10 @@ class ScrollBar {
 
 }
 
+
+/**
+ * 使用方法
+ */
 new ScrollBar({
     scrollWrapper: document.getElementsByClassName('scroll-wrapper')[0], //外部容器
     scrollContent: document.getElementsByClassName('scroll-content')[0], //包裹数据的容器
