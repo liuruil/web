@@ -17,7 +17,7 @@ class ScrollBar {
         // 容器的高度
         this.height = options.height
 
-        this.scrollWrapper.style.height = this.height + 'px'
+        
         // 滚动条的容器
         this.scrollBarContent;
         // 滚动条
@@ -39,6 +39,7 @@ class ScrollBar {
     setScrollWrapperStyle() {
         this.scrollWrapper.style.position = 'relative'
         this.scrollWrapper.style.overflow = 'hidden'
+        this.scrollWrapper.style.height = this.height + 'px'
         this.scrollWrapper.style.paddingRight = this.scrollWidth + 'px';
         this.scrollWrapper.style.boxSizing = 'border-box';
         this.scrollContent.style.boxSizing = 'border-box';
