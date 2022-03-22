@@ -120,7 +120,7 @@ function getItemByArray(id, arr, childName = 'children') {
 }
 
 /**
- * @description: 还原store的数据
+ * @description: 刷新页面还原store的数据
  */
 function initStoreData() {
     // 在页面加载时读取sessionStorage里的状态信息
