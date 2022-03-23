@@ -1,7 +1,8 @@
+// import { installEvent } from '../designMode/PublishSubscribe'
+
 /**
  * 自定义ScrollBar
  */
-
 class ScrollBar {
 
     constructor(options) {
@@ -26,6 +27,8 @@ class ScrollBar {
 
         this.addListenerScrollWrapper()
 
+        this.addScrollBarContentClick()
+
         // 监听页面滑动和滚动条滑动事件从而设置位置
         this.listen('scrollChange', function (originTop) {
             const resultTop = this.rollingBoundaryJudgment(originTop)
@@ -33,7 +36,9 @@ class ScrollBar {
         })
     }
 
-    // 设置容器的样式
+    /**
+     *  设置容器的样式
+     */
     setScrollWrapperStyle() {
         this.scrollWrapper.style.position = 'relative'
         this.scrollWrapper.style.overflow = 'hidden'
@@ -46,7 +51,9 @@ class ScrollBar {
         this.scrollContent.style.overflow = 'hidden';
     }
 
-    // 给滚动条添加滚动的容器
+    /**
+     * 给滚动条添加滚动的容器
+     */
     addScrollBarContent() {
         const div = document.createElement('div');
         div.className = 'scroll-bar-content';
@@ -56,7 +63,9 @@ class ScrollBar {
         this.addScrollBar()
     }
 
-    // 设置滚动条容器的样式
+    /**
+     * 设置滚动条容器的样式
+     */
     setScrollBarContentStyle() {
         this.scrollBarContent.style.position = 'absolute';
         this.scrollBarContent.style.top = '0';
@@ -66,7 +75,9 @@ class ScrollBar {
         this.scrollBarContent.style.backgroundColor = this.scrollBarContentColor
     }
 
-    // 添加滚动条元素以及设置高度
+    /**
+     * 添加滚动条元素以及设置高度
+     */
     addScrollBar() {
         // 容器的内部包裹元素视口高度
         const scrollHeight = this.scrollContent.scrollHeight
@@ -81,7 +92,9 @@ class ScrollBar {
         this.scrollBarContent.appendChild(this.scrollBar)
     }
 
-    // 设置滚动条的样式
+    /**
+     * 设置滚动条的样式
+     */
     setScrollBarStyle() {
         this.scrollBar.className = 'scroll-bar'
         this.scrollBar.style.width = '100%'
@@ -91,7 +104,9 @@ class ScrollBar {
         this.scrollBar.right = '0';
     }
 
-    // 监听滚动条的下拉事件
+    /**
+     * 监听滚动条的下拉事件
+     */
     addListenerScrollBar() {
         const that = this
         this.scrollWrapper.ondragstart = function () {
@@ -109,10 +124,29 @@ class ScrollBar {
         }
     }
 
-    // 监听鼠标滑动事件
+    /**
+     * 点击滚动条容器的事件
+     */
+    addScrollBarContentClick() {
+        const that = this
+        this.scrollBarContent.onclick = function (e) {
+            if (e.target === that.scrollBarContent) {
+                const barHeight = that.scrollBar.clientHeight
+                let top = e.offsetY
+                if (e.offsetY >= barHeight) {//点击进度条容器下方
+                    top = e.offsetY - barHeight;
+                }
+                that.trigger('scrollChange', top)
+            }
+        }
+    }
+
+    /**
+     * 监听容器鼠标滑动事件
+     */
     addListenerScrollWrapper() {
         var that = this;
-        this.scrollContent.onwheel = function (e) {
+        this.scrollWrapper.onwheel = function (e) {
             let originTop = that.scrollBar.offsetTop
             if (e.deltaY > 0) {
                 originTop += 10
@@ -156,7 +190,6 @@ class ScrollBar {
     }
 
 }
-
 installEvent(ScrollBar);
 
 
