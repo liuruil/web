@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .item {
+            height: 200px;
+            box-sizing: border-box;
+            border: 1px solid #ddd
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scroll-wrapper">
+        <div class="scroll-content">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+    <script src="./main.js"></script>
+    <script>
+        new ScrollBar({
+            scrollWrapper: document.getElementsByClassName('scroll-wrapper')[0], //外部容器
+            scrollContent: document.getElementsByClassName('scroll-content')[0], //包裹数据的容器
+            scrollWidth: 10,//滚动条的宽度
+            scrollBarContentColor: '#6C73FF',//滚动条容器的颜色
+            scrollBarColor: '#A5ABFF',//滚动条的颜色
+            height: '500px' //容器的高度
+        })
+    </script>
+</body>
+
+</html>
