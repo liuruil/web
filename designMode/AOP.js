@@ -3,9 +3,9 @@
 // 2. 把这些功能抽离出来之后，再通过“动态织入”的方式掺入业务逻辑模块中。
 // 3. 这样做的好处首先是可以保持业务逻辑模块的纯净和高内聚性，
 // 4. 其次是可以很方便地复用日志统计等功能模块。
+// 5. 可以动态改变函数的参数
 
 // 利用高阶函数实现AOP
-
 
 // 1. 利用原型链
 Function.prototype.before = function (beforeFn) {
@@ -38,12 +38,10 @@ const before = function (fn, beforeFn) {
 }
 
 const after = function (fn, afterFn) {
-    return function () {
-        var ret = fn.apply(this, arguments);
-        afterFn.apply(this, arguments);
+    return async function () {
+        var res = await fn.apply(this, arguments);
+        afterFn.apply(this, [...arguments, { res }]);
         return ret;
     }
 }
-
-
 

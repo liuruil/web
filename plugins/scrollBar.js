@@ -1,38 +1,36 @@
 /**
  * 自定义ScrollBar
  */
+
 class ScrollBar {
 
     constructor(options) {
-        // 获取容器元素
-        this.scrollWrapper = options.scrollWrapper;
-        // 容器元素的内部包裹元素
-        this.scrollContent = options.scrollContent;
-        // 滚动条的宽度
-        this.scrollWidth = options.scrollWidth || 10
-        // 滚动条容器的颜色
-        this.scrollBarContentColor = options.scrollBarContentColor
-        // 滚动条的颜色
-        this.scrollBarColor = options.scrollBarColor
-        // 容器的高度
-        this.height = options.height
+        this.height = options.height; // 容器的高度
+        this.scrollWrapper = options.scrollWrapper;//容器元素
 
-        
-        // 滚动条的容器
-        this.scrollBarContent;
-        // 滚动条
-        this.scrollBar;
+        this.scrollContent = options.scrollContent;// 容器元素的内部包裹元素
 
-        // 设置容器的样式
+        this.scrollBar;// 滚动条
+        this.scrollBarColor = options.scrollBarColor;// 滚动条的颜色
+        this.scrollWidth = options.scrollWidth || 10; // 滚动条的宽度 默认10px
+
+        this.scrollBarContent; // 滚动条的容器
+        this.scrollBarContentColor = options.scrollBarContentColor;// 滚动条容器的颜色
+
+
         this.setScrollWrapperStyle()
 
         this.addScrollBarContent()
 
-        // 监听滚动条的事件
         this.addListenerScrollBar()
 
-        // 监听页面的滚动事件
         this.addListenerScrollWrapper()
+
+        // 监听页面滑动和滚动条滑动事件从而设置位置
+        this.listen('scrollChange', function (originTop) {
+            const resultTop = this.rollingBoundaryJudgment(originTop)
+            this.setPosition(resultTop)
+        })
     }
 
     // 设置容器的样式
@@ -103,7 +101,7 @@ class ScrollBar {
             const originTop = that.scrollBar.offsetTop
             that.scrollWrapper.onmousemove = function (e) {
                 let top = e.pageY - point.pageY + originTop
-                that.setPosition(top)
+                that.trigger('scrollChange', top)
             }
         }
         document.onmouseup = function () {
@@ -121,22 +119,36 @@ class ScrollBar {
             } else {
                 originTop -= 10
             }
-            that.setPosition(originTop)
+            that.trigger('scrollChange', originTop)
         }
     }
 
-    // 设置最终位置
+    /**
+     * 滚动边界判定
+     * @param {Number} top 获取到滚动条移动的top值
+     * @return {Number} result 最终移动距离
+     */
+    rollingBoundaryJudgment(top) {
+        const scrollBarHeight = this.scrollBar.clientHeight;
+        const clientHeight = this.scrollContent.clientHeight
+        const maxTop = clientHeight - scrollBarHeight;
+        if (top >= maxTop) { //比最大移动距离大
+            top = maxTop
+        }
+        if (top <= 0) { //移动负值
+            top = 0
+        }
+        return top;
+    }
+
+    /**
+     * 改变位置
+     * @param {*} top 滚动条移动的最终top值
+     */
     setPosition(top) {
         const scrollBarHeight = this.scrollBar.clientHeight;
         const wrapperHeight = this.scrollContent.scrollHeight
         const clientHeight = this.scrollContent.clientHeight
-        const maxTop = clientHeight - scrollBarHeight
-        if (top >= maxTop) {
-            top = maxTop
-        }
-        if (top <= 0) {
-            top = 0
-        }
         this.scrollBar.style.top = top + 'px'
         this.scrollContent.scroll({
             top: wrapperHeight * (top + scrollBarHeight) / clientHeight - clientHeight
@@ -145,18 +157,22 @@ class ScrollBar {
 
 }
 
+installEvent(ScrollBar);
+
+
+
 
 /**
  * 使用方法
  */
-new ScrollBar({
-    scrollWrapper: document.getElementsByClassName('scroll-wrapper')[0], //外部容器
-    scrollContent: document.getElementsByClassName('scroll-content')[0], //包裹数据的容器
-    scrollWidth: 10,//滚动条的宽度
-    scrollBarContentColor: '#6C73FF',//滚动条容器的颜色
-    scrollBarColor: '#A5ABFF',//滚动条的颜色
-    height: 500 //容器的高度
-})
+// new ScrollBar({
+//     scrollWrapper: document.getElementsByClassName('scroll-wrapper')[0], //外部容器
+//     scrollContent: document.getElementsByClassName('scroll-content')[0], //包裹数据的容器
+//     scrollWidth: 10,//滚动条的宽度
+//     scrollBarContentColor: '#6C73FF',//滚动条容器的颜色
+//     scrollBarColor: '#A5ABFF',//滚动条的颜色
+//     height: 500 //容器的高度
+// })
 
 /* 
     <div class="scroll-wrapper">
