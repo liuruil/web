@@ -1,12 +1,12 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import { installEvent } from './mode/PublishSubscribe'
-import { SPEED_LIST } from './constant'
-
+import { installEvent } from '@/mode/PublishSubscribe'
+import { SPEED_LIST } from '@/constant'
+import styles from '@/css/index.less'
 /**
  * 自定义ScrollBar
  */
-class ScrollBar {
+export default class ScrollBar {
 
     constructor(options) {
         this.height = options.height; // 容器的高度
@@ -55,14 +55,9 @@ class ScrollBar {
      *  设置容器的样式
      */
     setScrollWrapperStyle() {
-        this.scrollWrapper.style.position = 'relative'
-        this.scrollWrapper.style.overflow = 'hidden'
+        this.scrollWrapper.classList.add(styles['scroll-wrapper'])
+        this.scrollContent.classList.add(styles['scroll-content'])
         this.scrollWrapper.style.height = this.height;
-        this.scrollWrapper.style.boxSizing = 'border-box';
-        this.scrollContent.style.boxSizing = 'border-box';
-        this.scrollContent.style.width = '100%';
-        this.scrollContent.style.height = '100%';
-        this.scrollContent.style.overflow = 'hidden';
     }
 
     /**
@@ -73,18 +68,15 @@ class ScrollBar {
         div.className = 'scroll-bar-content';
         this.scrollBarContent = div
         this.setScrollBarContentStyle()
-        this.scrollWrapper.appendChild(this.scrollBarContent);
         this.addScrollBar()
+        this.scrollWrapper.appendChild(this.scrollBarContent);
     }
 
     /**
      * 设置滚动条容器的样式
      */
     setScrollBarContentStyle() {
-        this.scrollBarContent.style.position = 'absolute';
-        this.scrollBarContent.style.top = '0';
-        this.scrollBarContent.style.right = '0';
-        this.scrollBarContent.style.height = '100%';
+        this.scrollBarContent.classList.add(styles['scroll-bar-content'])
         this.scrollBarContent.style.width = this.scrollWidth + 'px';
         this.scrollBarContent.style.backgroundColor = this.scrollBarContentColor
     }
@@ -111,11 +103,8 @@ class ScrollBar {
      */
     setScrollBarStyle() {
         this.scrollBar.className = 'scroll-bar'
-        this.scrollBar.style.width = '100%'
-        this.scrollBar.style.backgroundColor = this.scrollBarColor
-        this.scrollBar.style.position = 'absolute'
-        this.scrollBar.style.top = '0';
-        this.scrollBar.right = '0';
+        this.scrollBar.classList.add(styles['scroll-bar'])
+        this.scrollBar.style.backgroundColor = this.scrollBarColor;
     }
 
     /**
@@ -233,6 +222,3 @@ class ScrollBar {
     }
 
 }
-
-window.ScrollBar = ScrollBar;
-
