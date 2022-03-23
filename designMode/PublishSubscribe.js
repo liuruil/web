@@ -23,8 +23,8 @@ const eventObj = {
  * 给构造函数原型增加发布订阅事件
  * @param {Class} constructor 
  */
-const installEvent = function (constructor) {
+const installEvent = function (object) {
     for (var key in eventObj) {
-        constructor.prototype[key] = eventObj[key]
+        object[key] = eventObj[key]
     }
 }

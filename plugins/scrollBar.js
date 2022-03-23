@@ -27,17 +27,26 @@ class ScrollBar {
         this.isAnimate = options.isAnimate || true; //是否有动画
         this.speed = options.speed || 'normal'; //动画快慢
 
+        this.init()
+    }
 
+    /**
+     * 初始化函数
+     * @returns 
+     */
+    init() {
         this.setScrollWrapperStyle()
-
+        const scrollHeight = this.scrollContent.scrollHeight
+        const clientHeight = this.scrollContent.clientHeight
+        if (scrollHeight <= clientHeight) { //不需要滚动条
+            return;
+        }
+        this.scrollWrapper.style.paddingRight = this.scrollWidth + 'px';
+        installEvent(this);
         this.addScrollBarContent()
-
         this.addListenerScrollBar()
-
         this.addListenerScrollWrapper()
-
         this.addScrollBarContentClick()
-
         // 监听页面滑动和滚动条滑动事件从而设置位置
         this.listen('scrollChange', function (originTop) {
             const resultTop = this.rollingBoundaryJudgment(originTop)
@@ -51,8 +60,7 @@ class ScrollBar {
     setScrollWrapperStyle() {
         this.scrollWrapper.style.position = 'relative'
         this.scrollWrapper.style.overflow = 'hidden'
-        this.scrollWrapper.style.height = this.height + 'px'
-        this.scrollWrapper.style.paddingRight = this.scrollWidth + 'px';
+        this.scrollWrapper.style.height = this.height;
         this.scrollWrapper.style.boxSizing = 'border-box';
         this.scrollContent.style.boxSizing = 'border-box';
         this.scrollContent.style.width = '100%';
@@ -153,6 +161,10 @@ class ScrollBar {
         })
     }
 
+    /**
+     * 改变位置
+     * @param {*} top 滚动条移动的最终top值
+     */
     setAnimatePosition(top) {
         let timer = null;
         let originTop = this.scrollBar.offsetTop
@@ -224,8 +236,6 @@ class ScrollBar {
     }
 
 }
-installEvent(ScrollBar);
-
 
 
 
