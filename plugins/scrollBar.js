@@ -1,5 +1,11 @@
 // import { installEvent } from '../designMode/PublishSubscribe'
 
+const SPEED_LIST = {
+    slow: 1,
+    normal: 2,
+    fast: 3,
+}
+
 /**
  * 自定义ScrollBar
  */
@@ -17,6 +23,9 @@ class ScrollBar {
 
         this.scrollBarContent; // 滚动条的容器
         this.scrollBarContentColor = options.scrollBarContentColor;// 滚动条容器的颜色
+
+        this.isAnimate = options.isAnimate || true; //是否有动画
+        this.speed = options.speed || 'normal'; //动画快慢
 
 
         this.setScrollWrapperStyle()
@@ -112,16 +121,16 @@ class ScrollBar {
         this.scrollWrapper.ondragstart = function () {
             return false
         }
-        this.scrollBar.onmousedown = function (point) {
+        this.scrollBar.addEventListener('mousedown', function (point) {
             const originTop = that.scrollBar.offsetTop
             that.scrollWrapper.onmousemove = function (e) {
                 let top = e.pageY - point.pageY + originTop
                 that.trigger('scrollChange', top)
             }
-        }
-        document.onmouseup = function () {
+        })
+        document.addEventListener('mouseup', function () {
             that.scrollWrapper.onmousemove = null;
-        }
+        })
     }
 
     /**
@@ -129,16 +138,41 @@ class ScrollBar {
      */
     addScrollBarContentClick() {
         const that = this
-        this.scrollBarContent.onclick = function (e) {
+        this.scrollBarContent.addEventListener('click', function (e) {
             if (e.target === that.scrollBarContent) {
                 const barHeight = that.scrollBar.clientHeight
                 let top = e.offsetY
                 if (e.offsetY >= barHeight) {//点击进度条容器下方
                     top = e.offsetY - barHeight;
                 }
-                that.trigger('scrollChange', top)
+                if (!that.isAnimate) {
+                    return that.setPosition(top)
+                }
+                that.setAnimatePosition(top)
             }
-        }
+        })
+    }
+
+    setAnimatePosition(top) {
+        let timer = null;
+        let originTop = this.scrollBar.offsetTop
+        let direction = originTop > top ? 'up' : 'down';
+        timer = setInterval(() => {
+            if (direction === 'up') {
+                if (originTop <= top) {
+                    this.setPosition(top)
+                    return clearInterval(timer)
+                }
+                originTop -= SPEED_LIST[this.speed]
+            } else {
+                if (originTop >= top) {
+                    this.setPosition(top)
+                    return clearInterval(timer)
+                }
+                originTop += SPEED_LIST[this.speed]
+            }
+            this.setPosition(originTop)
+        }, 1)
     }
 
     /**
@@ -146,7 +180,7 @@ class ScrollBar {
      */
     addListenerScrollWrapper() {
         var that = this;
-        this.scrollWrapper.onwheel = function (e) {
+        this.scrollWrapper.addEventListener('wheel', function (e) {
             let originTop = that.scrollBar.offsetTop
             if (e.deltaY > 0) {
                 originTop += 10
@@ -154,7 +188,7 @@ class ScrollBar {
                 originTop -= 10
             }
             that.trigger('scrollChange', originTop)
-        }
+        })
     }
 
     /**
