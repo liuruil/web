@@ -1,5 +1,6 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { isIE } from "@/utilS"
 import { installEvent } from '@/mode/PublishSubscribe'
 import { SPEED_LIST } from '@/constant'
 import styles from '@/css/index.less'
@@ -216,6 +217,10 @@ export default class ScrollBar {
         const wrapperHeight = this.scrollContent.scrollHeight
         const clientHeight = this.scrollContent.clientHeight
         this.scrollBar.style.top = top + 'px'
+        if (isIE()) { //兼容IE
+            return this.scrollContent.scrollTop = wrapperHeight * (top + scrollBarHeight) / clientHeight - clientHeight
+        }
+        // this.scrollContent.scroll 此方法在IE上不支持
         this.scrollContent.scroll({
             top: wrapperHeight * (top + scrollBarHeight) / clientHeight - clientHeight
         })

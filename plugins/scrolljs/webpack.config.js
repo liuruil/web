@@ -1,6 +1,7 @@
 
 const path = require('path')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -35,6 +36,7 @@ module.exports = {
                         options: { modules: true }
                     },
                     'less-loader',
+                    'postcss-loader'
                 ],
             }
         ]
@@ -43,6 +45,7 @@ module.exports = {
         new miniCssExtractPlugin({
             // 生成的单独的css文件重命名
             filename: 'css/index.css'
-        })
+        }),
+        new OptimizeCssAssetsPlugin()
     ],
 };
