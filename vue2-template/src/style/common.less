@@ -1,0 +1,195 @@
+@import url('./theme.less');
+// 重置elementUi的样式
+
+// 菜单的背景色
+.el-menu-item:focus,
+.el-menu-item:hover {
+    background-color: @menuBg;
+}
+
+// tab页的主题色
+.el-tabs__item.is-active,
+.el-tabs__item:hover {
+    color: @theme;
+}
+
+.el-tabs__active-bar {
+    background-color: @theme;
+}
+
+// 按钮的修改样式
+.el-button:focus,
+.el-button:hover {
+    color: @buttonPrimary;
+    border-color: @buttonPrimary;
+    background-color: @menuButtonBg;
+}
+
+// 平常按钮的颜色 type='primary'
+.el-button--primary {
+    border-color: @buttonPrimary  !important;
+    background-color: @buttonPrimary  !important;
+    color: #fff !important;
+}
+
+// 按钮hover的颜色 type='primary'
+.el-button--primary:focus,
+.el-button--primary:hover {
+    background: @buttonPrimary  !important;
+    border-color: @buttonPrimary  !important;
+}
+
+
+// 文字按钮的颜色 type='text'
+.el-button--text {
+    color: @buttonTextPrimary;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none
+}
+
+//自定义灰色文字按钮
+
+.el-button--text.grey {
+    color: #999;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+        color: #999 !important;
+    }
+}
+
+.el-button--text:focus,
+.el-button--text:hover {
+    color: @buttonTextPrimary  !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
+}
+
+// 禁用文字按钮的hover focus 效果
+.el-button--text.is-disabled:focus,
+.el-button--text.is-disabled:hover {
+    color: #C0C4CC !important;
+}
+
+
+// 顶部面包屑的样式
+.el-breadcrumb__inner a,
+.el-breadcrumb__inner.is-link {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+// .el-breadcrumb__inner a:hover,
+.el-breadcrumb__inner.is-link:hover {
+    color: @theme  !important;
+}
+
+// 表格头部样式
+.el-table__header-wrapper .el-table__header .has-gutter tr th {
+    background-color: #F5F5F5 !important;
+    font-weight: 700;
+    color: #1F2738;
+}
+
+// 全局修改分页组件
+.el-pagination button:hover,
+.el-select .el-input__inner:focus,
+.el-select-dropdown__item.selected,
+.el-select .el-input.is-focus .el-input__inner {
+    color: @pageBg  !important;
+}
+
+.el-pager li:hover {
+    color: @pageBg;
+}
+
+.el-pager li.active {
+    background-color: @pageBg  !important;
+}
+
+.el-pager li.active:hover {
+    color: #fff;
+}
+
+.el-pagination__sizes .el-input .el-input__inner:hover,
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+    border-color: @pageBg  !important;
+}
+
+// 提示框
+.el-message-box__headerbtn:focus .el-message-box__close,
+.el-message-box__headerbtn:hover .el-message-box__close {
+    color: @theme;
+}
+
+// 浮层
+.el-dialog__headerbtn:focus .el-dialog__close,
+.el-dialog__headerbtn:hover .el-dialog__close {
+    color: @theme  !important;
+}
+
+.view-container {
+    height: 100%;
+}
+
+// 表格
+.list-container {
+    box-shadow: 3px 2px 11px 2px #E3E6F2;
+    padding: 0 0 10px 0;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+// 表格全选禁用按钮
+.disabled-dialog {
+    width: 14px;
+    height: 23px;
+    background-color: transparent;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: not-allowed;
+    top: 50%;
+}
+
+.disabled-dialog .inner-dialog {
+    width: 14px;
+    height: 16px;
+    z-index: 1;
+    position: absolute;
+    left: 50%;
+    background-color: #edf2fc;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    border: 1px solid #DCDFE6;
+    cursor: not-allowed;
+    border-radius: 2px;
+    top: 50%;
+}
+
+
+// 滚动条的样式
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(161, 158, 158);
+}
+
+//主区域路由切换过渡动画
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
