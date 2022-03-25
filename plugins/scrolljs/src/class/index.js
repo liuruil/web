@@ -10,6 +10,7 @@ import styles from '@/css/index.less'
 export default class ScrollBar {
 
     constructor(options) {
+        this.observer = null;
         this.height = options.height; // 容器的高度
         this.scrollWrapper = options.scrollWrapper;//容器元素
 
@@ -34,14 +35,10 @@ export default class ScrollBar {
      */
     init() {
         this.setScrollWrapperStyle()
-        const scrollHeight = this.scrollContent.scrollHeight
-        const clientHeight = this.scrollContent.clientHeight
-        if (scrollHeight <= clientHeight) { //不需要滚动条
-            return;
-        }
-        this.scrollWrapper.style.paddingRight = this.scrollWidth + 'px';
-        installEvent(this); // 添加发布订阅方法
+        this.addObserveDomChange()
         this.addScrollBarContent()
+        this.calcScrollHeight()
+        installEvent(this); // 添加发布订阅方法
         this.addListenerScrollBar()
         this.addListenerScrollWrapper()
         this.addScrollBarContentClick()
@@ -107,6 +104,26 @@ export default class ScrollBar {
         this.scrollBar.classList.add(styles['scroll-bar'])
         this.scrollBar.style.backgroundColor = this.scrollBarColor;
     }
+    /**
+     * 计算和设置滚动条的高度
+     * @returns {Boolean} 是否需要滚动条
+     */
+    calcScrollHeight() {
+        const scrollContent = this.scrollContent;
+        const scrollHeight = scrollContent.scrollHeight;
+        const clientHeight = scrollContent.clientHeight;
+        if (scrollHeight <= clientHeight) {
+            this.scrollWrapper.style.paddingRight = '0px';
+            this.scrollBar.style.height = '0px'
+            this.scrollBarContent.classList.add(styles['hidden'])
+            // 不需要滚动条
+            return false;
+        }
+        this.scrollWrapper.style.paddingRight = this.scrollWidth + 'px';
+        this.scrollBar.style.height = (clientHeight * clientHeight) / scrollHeight + 'px'; // 计算滚动条的高度
+        this.scrollBarContent.classList.remove(styles['hidden'])
+        return true;
+    }
 
     /**
      * 监听滚动条的下拉事件
@@ -149,6 +166,20 @@ export default class ScrollBar {
     }
 
     /**
+     * 监听Dom节点变化，重新设置滚动条
+     */
+    addObserveDomChange() {
+        this.observer = new MutationObserver(this.calcScrollHeight.bind(this))
+        this.observer.observe(this.scrollContent, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+        })
+        // 视口变化重新计算高度
+        window.onresize = this.calcScrollHeight.bind(this)
+    }
+
+    /**
      * 改变位置
      * @param {*} top 滚动条移动的最终top值
      */
@@ -180,6 +211,11 @@ export default class ScrollBar {
     addListenerScrollWrapper() {
         var that = this;
         this.scrollWrapper.addEventListener('wheel', function (e) {
+            const scrollHeight = that.scrollContent.scrollHeight;
+            const clientHeight = that.scrollContent.clientHeight;
+            if (scrollHeight <= clientHeight) {
+                return
+            }
             let originTop = that.scrollBar.offsetTop
             if (e.deltaY > 0) {
                 originTop += 10
@@ -187,6 +223,7 @@ export default class ScrollBar {
                 originTop -= 10
             }
             that.trigger('scrollChange', originTop)
+            return false
         })
     }
 
