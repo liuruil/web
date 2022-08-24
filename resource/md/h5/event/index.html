@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div">
+
+    </div>
+    <script>
+        const res = document.querySelector('#div')
+        res.addEventListener('touchstart', function () {
+            console.log('按下了')
+        })
+        res.addEventListener('touchmove', function () {
+            console.log('移动了')
+        })
+        res.addEventListener('touchend', function () {
+            console.log('抬起了')
+        })
+    </script>
+</body>
+
+</html>
