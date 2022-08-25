@@ -2,7 +2,7 @@
 
 ## await 关键字
 
->**await** 关键字期待(但实际上并不要求)一个实现了**thenable**接口的对象，但常规值也可以，如果是实现thenable接口的对象，则这个对象可以由 await 关键字**解包**。如果不是，这个值就被当作已解决的期约。
+> **await** 关键字期待(但实际上并不要求)一个实现了**thenable**接口的对象，但常规值也可以，如果是实现 thenable 接口的对象，则这个对象可以由 await 关键字**解包**。如果不是，这个值就被当作已解决的期约。
 
 ```js
 async function test1() {
@@ -26,7 +26,8 @@ async function test2() {
 test2(); // 3秒后打印 123
 ```
 
-## 野生promise的处理
+## 野生 promise 的处理
+
 > 通常 thenable 的可靠性要低于真正的 Promise。
 
 ```js
@@ -42,11 +43,11 @@ const thenable = {
 
 **最可能出现的误用 thenable 的情况，是那些使用了 then() 方法，但是并没有严格遵循 Promise 风格的异步库——确实有几个这样的“野生”库。**
 
-**解决方法: 用Promise.resolve(thenable)包裹野生Promise，确保只决议一次**
+**解决方法: 用 Promise.resolve(thenable)包裹野生 Promise，确保只决议一次**
 
-### Promise静态方法
+### Promise 静态方法
 
 1. Promise.all([...])
-   1. 接受一个或多个值的数组（比如，立即值、Promise、thenable(野生Promise)）
-2. Promise.resolve() 创建了一个决议到传入值的promise
-3. Promise.reject() 创建了一个拒绝到传入值的promise
+   1. 接受一个或多个值的数组（比如，立即值、Promise、thenable(野生 Promise)）
+2. Promise.resolve() 创建了一个决议到传入值的 promise
+3. Promise.reject() 创建了一个拒绝到传入值的 promise
