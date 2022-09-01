@@ -62,55 +62,89 @@ p1.then((val) => {
 1. 如果当前的 Promise 是未决的，得到的新的 Promise 是挂起状态
 2. 如果当前的 Promise 是已决的，会影响后续处理函数，并且将后续处理结果(返回值)作为 resolved 状态数据，应用到新的 Promise 中；如果后续处理函数发生错误，则把返回值作为 rejected 状态数据 应用到新的 Promise 中
 3. 后续的 Promise 一定会等到前面的 Promise 有了后续处理结果后，才会变成已决状态
+4. 如果 then 的参数不是一个函数，则这个 promise 的状态和之前保持一致
+
+> 注意事项
+>
+> 1. then 方法必定会返回一个新的 Promise
+>    - 可理解为后续处理也是一个任务
+> 2. 新任务的状态取决于后续处理
+>    - 若没有相关的后续处理，新任务的状态和前任务一致，数据为前任务的数据
+>    - 若有后续的处理，但还未执行，新任务挂起
+>      - 后续处理执行无错，新任务的状态为完成，数据为后续处理的返回值
+>      - 后续处理执行有错，新任务的状态为失败，数据为异常对象
+>      - 后续处理返回一个新的任务对象，新任务的状态和数据与该任务对象一致
 
 ## Promise 的其他 API 静态成员(构造函数成员)
 
-1. Promise.all([p1,p2,p3]) 里面的参数是数组 数组中是 promise 对象 执行队列
+- Promise.all([p1,p2,p3]) 里面的参数是数组 数组中是 promise 对象 执行队列
 
-```js
-这个方法返回一个新的Promise对象，该Promise对象在只有当参数中所有的Promise都成功的时候才会触发，一旦有任何一个失败则触发该promise的失败 这个新的promise对象在触发成功状态以后，会把一个包含参数中所有Promise返回值的数组作为成功回调的返回值，顺序跟参数中的保持一致，如果失败，会把第一个触发失败的promise对象的错误信息作为他的失败信息
-常用来处理多个promise对象的状态集合
-```
+  - 这个方法返回一个新的 Promise 对象，该 Promise 对象在只有当参数中所有的 Promise 都成功的时候才会触发，
+  - 一旦有任何一个失败则触发该 promise 的失败
+  - 这个新的 promise 对象在触发成功状态以后，会把一个包含参数中所有 Promise 返回值的数组作为成功回调的返回值，顺序跟参数中的保持一致，
+  - 如果失败，会把第一个触发失败的 promise 对象的错误信息作为他的失败信息常用来处理多个 promise 对象的状态集合
 
-2. Promise.race([p1,p2])
+- Promise.race([p1,p2])
 
-```js
-当参数中任意一个子promise失败或者成功后，父promise马上也会用此promise的成功返回值或失败详情作为参数调用父promise绑定相应的句柄，斌返回该promis对象
-```
+  - 当参数中任意一个子 promise 失败或者成功后，父 promise 马上也会用此 promise 的成功返回值或失败详情作为参数调用父 promise 绑定相应的句柄，斌返回该 promise 对象
 
-3. Promise.resolve(1)
+- Promise.resolve(1)
 
-- 直接返回一个 resolve 状态的 Promise 参数就是数据
-- 如果直接传递参数为一个 Promise 对象 pro1 则 Promise.resolve(pro1) === pro1
+  - 直接返回一个 resolve 状态的 Promise 参数就是数据
+  - 如果直接传递参数为一个 Promise 对象 pro1 则 Promise.resolve(pro1) === pro1
 
-4. Promise.reject(1)
-
-- 直接返回一个 reject 状态的 Promise 参数就是数据
+- Promise.reject(1)
+  - 直接返回一个 reject 状态的 Promise 参数就是数据
 
 ## async await
 
 - async 目的是简化在函数的返回之中对 promise 的创建
 
-async 用于修饰函数(无论是函数字面量还是函数表达式)，
-放置在函数最开始的位置，被修饰的函数一定返回一个 promise 对象
+> async 用于修饰函数(无论是函数字面量还是函数表达式)，放置在函数最开始的位置，被修饰的函数一定返回一个 promise 对象
 
 ```js
 async function test() {
-  console.log(1);
-  return 2;
+  return 1; //该函数的返回值是promise完成后的数据
 }
-// 等效于
+
+test(); // Promise{ 1 }
+
+async function test2() {
+  return Promise.resolve(1); // 若返回的是promise，则test2的返回结果和promise状态保持一致
+}
+
+test2(); // Promise{ 1 }
+
+async function test3() {
+  throw new Error("出错了"); // 若执行过程报错，则test2的返回结果状态是rejected
+}
+
+test3(); // Promise{ <rejected> Error('出错了') }
+```
+
+## await
+
+- 等待 Promise 完成
+- await 关键字必须出现在 async 函数中
+
+```js
+async function test() {
+  const n = await Promise.resolve(1);
+  console.log(n);
+}
+
+// 上边的函数等效于
+
 function test() {
   return new Promise((resolve, reject) => {
-    console.log(1);
-    resolve(2);
+    Promise.resolve(1).then((n) => {
+      console.log(n);
+      resolve();
+    });
   });
 }
 ```
 
-- await 等待
-  await 关键字必须出现在 async 函数中
-
-如果 await 修饰的不是 Promise 则会使用 Promise.resolve 包装后按规则运行
-await 捕捉不到错误的情况
-如果有错误情况 可以用 try catch 捕捉
+1. 如果 await 修饰的不是 Promise 则会使用 Promise.resolve 包装后按规则运行
+2. await 捕捉不到错误的情况
+3. 如果有错误情况 可以用 try catch 捕捉
