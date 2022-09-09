@@ -141,3 +141,35 @@ function initStoreData() {
         }
     });
 }
+
+/**
+ * 函数柯立化
+ * 应用场景 ajax发送请求（type url params）
+ * @param {*} fn 函数
+ * @param {*} length 需要参数的个数
+ */
+var curry = (function () {
+    /**
+     * 固定参数才会fn的函数
+     * @param {*} fn 应该执行的函数
+     */
+    function FixedParamsCurry(fn) {
+        var _args = Array.prototype.slice.call(arguments, 1)
+        return function () {
+            var newArgs = _args.concat(Array.prototype.slice.call(arguments))
+            return fn.apply(this, newArgs)
+        }
+    }
+    return function (fn, length) {
+        var length = length || fn.length
+        return function () {
+            if (arguments.length < length) {
+                var combined = [fn].concat(Array.prototype.slice.call(arguments))
+                return curry(FixedParamsCurry.apply(this, combined), length - arguments.length)
+            } else {
+                return fn.apply(this, arguments)
+            }
+        }
+    }
+
+})()

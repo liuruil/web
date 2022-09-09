@@ -1,6 +1,6 @@
 ## Reflect 反射
 
->Reflectd对象有很多静态方法  为了减少魔法 (函数式变成的影响)
+> Reflectd 对象有很多静态方法 为了减少魔法 (函数式编程的影响)
 
 ```js
 ReflectAPI的介绍
@@ -28,7 +28,7 @@ Reflect.apply(func,null,[3,5]) // 输出结果 3,5
 var obj = {
    a :5
 }
-Reflect.deleteProprty(obj,'a') 
+Reflect.deleteProprty(obj,'a')
 console.log(obj) // {}
 
 5:Reflect.construct(target,argumentList) 用构造函数创建一个对象
