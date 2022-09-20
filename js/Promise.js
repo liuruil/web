@@ -21,6 +21,7 @@ function runMicroTask(callback) {
 
 /**
  * 判断一个数据是否是promise
+ * 鸭子类型检测
  */
 function isPromise(obj) {
     return !!(obj && typeof obj === 'object' && typeof obj.then === 'function')
