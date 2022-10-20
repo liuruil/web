@@ -1,13 +1,15 @@
-## 深入了解steState
->setState对状态的改变，可能是异步的
+## 深入了解 steState
 
->如果改变状态的代码处于某个HTML元素的事件中，则其是异步的
+> setState 对状态的改变，可能是异步的
+
+> 如果改变状态的代码处于某个 HTML 元素的事件中，则其是异步的
+
 ```react
 handeClick(){
     this.setState({
        <!-- 改变状态触发render函数，之后再运行回调函数  -->
     },()=>{
-       console.log('a') 
+       console.log('a')
     })
 }
 render(){
@@ -15,7 +17,9 @@ render(){
 }
 <!-- 先打印b 再打印a -->
 ```
->如果在事件中触发三次状态的改变
+
+> 如果在事件中触发三次状态的改变
+
 ```react
 state = {
     n:0
@@ -84,8 +88,7 @@ this.setState(prev=>{
 此时虽然改变了三次状态，但是render函数只会运行一次
 ```
 
-
-**react会对异步的setState进行优化，将多次setState进行合并(将多次状态改变完成后统一对state进行改变，再运行render函数)。如果是同步的则不会**
+**react 会对异步的 setState 进行优化，将多次 setState 进行合并(将多次状态改变完成后统一对 state 进行改变，再运行 render 函数)。如果是同步的则不会**
 
 ```react
 setInterval(()=>{
@@ -102,9 +105,10 @@ setInterval(()=>{
     })
 })
 ```
+
 最佳实践：
-1. 把所有的setState当作是异步的
-2. 永远不要信任setState调用之后的状态
+
+1. 把所有的 setState 当作是异步的
+2. 永远不要信任 setState 调用之后的状态
 3. 如果需要使用改变之后的状态，需要使用回调函数的方式
 4. 如果新的状态需要用到之前的状态进行运算，使用函数的方式(第一个参数)
-

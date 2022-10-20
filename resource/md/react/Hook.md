@@ -49,13 +49,15 @@ State Hook 是一个在函数组件中使用的函数(useState)，用于在函�
 7. 如果某些状态之间没有必然的联系，应该分化为不同的状态，**不要合并成一个对象**
 8. 和类组件的状态一样，函数组件中改变状态可能是异步的(在 DOM 事件中)，多个状态变化会合并以提高效率，此时不能信任之前的状态，应该使用回调函数的方式改变状态
 
-```react
+```jsx
    const [count, setCount] = useState(0)
-   <button  onClick={() => {
-              setCount(prev=>prev+1)
-              setCount(prev=>prev+1)
-            }}>点击
- </button>
+   <button
+      onClick={() => {
+            setCount(prev=>prev+1)
+            setCount(prev=>prev+1)
+      }}>
+   点击
+   </button>
 ```
 
 ## Effect HOOK
