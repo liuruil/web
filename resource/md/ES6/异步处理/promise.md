@@ -10,8 +10,8 @@
   两种阶段   (未决)                                 (已决)
           unsettled                              settled
 
-  三种状态    挂起                          完成                 失败
-          (pending)                    (resolve)            (reject)
+  三种状态    挂起                          完成                失败
+          (pending)                    (resolve)           (reject)
 
 
         异步执行的全过程              拿到结果，无论结果如何     其他的外界因素
@@ -60,10 +60,10 @@ p1.then((val) => {
 - 后续的 Promise 一定会等到前面的 Promise 有了后续处理结果后，才会变成已决状态
 - Promise 对象中无论 then 方法还是 catch 方法，它们都具有返回值
   - 返回的是一个全新的 Promise 对象 **返回值**就是这个新的 Promise.then 的参数值
-- 如果当前的 Promise 是未决的，得到的新的 Promise 是挂起状态
-- 如果当前的 Promise 是已决的，会影响后续处理函数，并且将后续处理结果(返回值)作为 resolved 状态数据，应用到新的 Promise 中
-- 如果后续处理函数发生错误，则把错误信息作为 rejected 状态数据 应用到新的 Promise 中
-- 如果 then 的参数不是一个函数，则这个 promise 的状态和之前保持一致
+  - 如果当前的 Promise 是未决的，得到的新的 Promise 是挂起状态
+  - 如果当前的 Promise 是已决的，会影响后续处理函数，并且将后续处理结果(返回值)作为 resolved 状态数据，应用到新的 Promise 中
+  - 如果后续处理函数发生错误，则把错误信息作为 rejected 状态数据 应用到新的 Promise 中
+  - 如果 then 的参数不是一个函数，则这个 promise 的状态和之前保持一致
 
 > 注意事项
 >
@@ -76,7 +76,7 @@ p1.then((val) => {
 >      - 后续处理执行有错，新任务的状态为失败，数据为异常对象
 >      - 后续处理返回一个新的任务对象，新任务的状态和数据与该任务对象一致
 
-## 野生 promise
+## 野生 promise(thenable)
 
 > 什么是野生的 Promise
 >
@@ -87,7 +87,7 @@ p1.then((val) => {
 > 其中最主要的是，Promise 值可能是从其他浏览器窗口（iframe 等）接收到的。这个浏览器窗口自己的 Promise 可能和当前窗口 /frame 的不同，因此这样的检查无法识别 Promise 实例。
 >
 > 还有，库或框架可能会选择实现自己的 Promise，而不是使用原生 ES6 Promise 实现。实际上，很有可能你是在早期根本没有 Promise 实现的浏览器中使用由库提供的 Promise。
-> 因此，识别 Promise（或者行为类似于 Promise 的东西）就是定义某种称为 thenable 的东西，将其定义为任何具有 then(..) 方法的对象和函数。我们认为，任何这样的值就是 Promise 一致的 thenable。
+> 因此，识别 Promise（或者行为类似于 Promise 的东西）就是定义某种称为 thenable 的东西，将其定义为任何具有 then(..) 方法的对象和函数。F
 >
 > 根据一个值的形态（具有哪些属性）对这个值的类型做出一些假定。这种类型检查（type check）一般用术语鸭子类型（duck typing）来表示——“如果它看起来像只鸭子，叫起来像只鸭子，那它一定就是只鸭子”。于是，对 thenable 值的鸭子类型检测就大致类似于：只要实现了 thenable 接口
 
