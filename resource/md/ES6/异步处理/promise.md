@@ -2,10 +2,10 @@
 
 ## promise 出现的原因
 
-- 提供了异步操作的规范
+- 提供了 异步操作 的规范
 - 解决了回调地狱
 
-```javascript
+```powershell
 
   两种阶段   (未决)                                 (已决)
           unsettled                              settled
@@ -91,7 +91,9 @@ p1.then((val) => {
 > 还有，库或框架可能会选择实现自己的 Promise，而不是使用原生 ES6 Promise 实现。实际上，很有可能你是在早期根本没有 Promise 实现的浏览器中使用由库提供的 Promise。
 > 因此，识别 Promise（或者行为类似于 Promise 的东西）就是定义某种称为 thenable 的东西，将其定义为任何具有 then(..) 方法的对象和函数。
 >
-> 根据一个值的形态（具有哪些属性）对这个值的类型做出一些假定。这种类型检查（type check）一般用术语鸭子类型（duck typing）来表示——“如果它看起来像只鸭子，叫起来像只鸭子，那它一定就是只鸭子”。于是，对 thenable 值的鸭子类型检测就大致类似于：只要实现了 thenable 接口
+> 根据一个值的形态（具有哪些属性）对这个值的类型做出一些假定。这种类型检查（type check）一般用术语鸭子类型（duck typing）来表示——“如果它看起来像只鸭子，叫起来像只鸭子，那它一定就是只鸭子”。
+>
+> 于是，对 thenable 值的鸭子类型检测就大致类似于：只要实现了 thenable 接口
 
 ```javascript
 /**
@@ -147,9 +149,8 @@ const thenable = {
 - Promise.resolve(1)
 
   - 直接返回一个 resolve 状态的 Promise 参数就是数据
-  - 如果直接传递参数为一个 Promise 对象 pro1 则 Promise.resolve(pro1) === pro1
-  - 会将传入的真正 Promise 直接返回，
-  - 对传入的 thenable 则会展开。如果这个 thenable 展开得到一个拒绝状态，那么从 Promise.resolve(..) 返回的 Promise 实际上就是这同一个拒绝状态
+  - 如果直接传递参数为一个 Promise 对象 pro1 则 Promise.resolve(pro1) === pro1，会将传入的真正 Promise 直接返回，
+  - 如果传入的 thenable 则会展开，如果这个 thenable 展开得到一个拒绝状态，那么从 Promise.resolve(..) 返回的 Promise 实际上就是这同一个拒绝状态
   - 实际上的结果可能是完成或拒绝。
 
 - Promise.reject(1)
