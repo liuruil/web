@@ -25,6 +25,8 @@
 var p1 = new Promise((resolve, reject) => {
   var flag = true;
   if (flag) {
+    // 如果传给 resolve(..) 的是一个真正的 Promise 或 thenable 值，
+    // 这个值就会被递归展开，并且（要构造的）promise 将取用其最终决议值或状态
     resolve("成功了");
   } else {
     reject("失败了");
@@ -80,14 +82,14 @@ p1.then((val) => {
 
 > 什么是野生的 Promise
 >
-> Promise 领域，一个重要的细节是如何确定某个值是不是真正的 Promise。既然 Promise 是通过 new Promise(..) 语法创建的，那你可能就认为可以通过 p instanceof Promise 来检查这并不足以作为检查方法，
+> Promise 领域，一个重要的细节是如何确定某个值是不是真正的 Promise。既然 Promise 是通过 new Promise(..) 语法创建的，那你可能就认为可以通过 p instanceof Promise 来检查，但这并不足以作为检查方法，
 >
 > 原因如下
 >
 > 其中最主要的是，Promise 值可能是从其他浏览器窗口（iframe 等）接收到的。这个浏览器窗口自己的 Promise 可能和当前窗口 /frame 的不同，因此这样的检查无法识别 Promise 实例。
 >
 > 还有，库或框架可能会选择实现自己的 Promise，而不是使用原生 ES6 Promise 实现。实际上，很有可能你是在早期根本没有 Promise 实现的浏览器中使用由库提供的 Promise。
-> 因此，识别 Promise（或者行为类似于 Promise 的东西）就是定义某种称为 thenable 的东西，将其定义为任何具有 then(..) 方法的对象和函数。F
+> 因此，识别 Promise（或者行为类似于 Promise 的东西）就是定义某种称为 thenable 的东西，将其定义为任何具有 then(..) 方法的对象和函数。
 >
 > 根据一个值的形态（具有哪些属性）对这个值的类型做出一些假定。这种类型检查（type check）一般用术语鸭子类型（duck typing）来表示——“如果它看起来像只鸭子，叫起来像只鸭子，那它一定就是只鸭子”。于是，对 thenable 值的鸭子类型检测就大致类似于：只要实现了 thenable 接口
 
@@ -131,7 +133,7 @@ const thenable = {
 
 - Promise.all([p1,p2,p3]) 里面的参数是数组 数组中是 promise 对象 执行队列
 
-  - 接受一个或多个值的数组（比如，立即值、Promise、thenable(野生 Promise)）
+  - 接受一个或多个值的数组（比如，立即值、Promise、thenable(野生 Promise),就本质而言，列表中的每个值都会通过 Promise.resolve(..) 过滤，以确保要等待的是一个真正的 Promise，所以立即值会被规化为为这个值构建的 Promise。如果数组是空的，主 Promise 就会立即完成。
   - 这个方法返回一个新的 Promise 对象，该 Promise 对象在只有当参数中所有的 Promise 都成功的时候才会触发，
   - 一旦有任何一个失败则触发该 promise 的失败
   - 这个新的 promise 对象在触发成功状态以后，会把一个包含参数中所有 Promise 返回值的数组作为成功回调的返回值，顺序跟参数中的保持一致，
@@ -140,14 +142,20 @@ const thenable = {
 - Promise.race([p1,p2])
 
   - 当参数中任意一个子 promise 失败或者成功后，父 promise 马上也会用此 promise 的成功返回值或失败详情作为参数调用父 promise 绑定相应的句柄，斌返回该 promise 对象
+  - 如果你传入了一个空数组，主 race([..]) Promise 永远不会决议，而不是立即决议。 ES6 按理来说应该指定它完成或拒绝，抑或只是抛出某种同步错误。遗憾的是，因为 Promise 库在时间上早于 ES6 Promise，它们不得已遗留了这个问题，所以，要注意，永远不要递送空数组。
 
 - Promise.resolve(1)
 
   - 直接返回一个 resolve 状态的 Promise 参数就是数据
   - 如果直接传递参数为一个 Promise 对象 pro1 则 Promise.resolve(pro1) === pro1
+  - 会将传入的真正 Promise 直接返回，
+  - 对传入的 thenable 则会展开。如果这个 thenable 展开得到一个拒绝状态，那么从 Promise.resolve(..) 返回的 Promise 实际上就是这同一个拒绝状态
+  - 实际上的结果可能是完成或拒绝。
 
 - Promise.reject(1)
+
   - 直接返回一个 reject 状态的 Promise 参数就是数据
+  - 传入一个 Promise/thenable 值,它会把这个值原封不动地设置为拒绝理由。后续的拒绝处理函数接收到的是你实际传给 reject(..) 的那个 Promise/thenable，而不是其底层的立即值。
 
 ## async
 
