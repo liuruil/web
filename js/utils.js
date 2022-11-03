@@ -173,3 +173,20 @@ var curry = (function () {
     }
 
 })()
+
+
+/**
+ * 树形结构排序，根据汉字首字母
+ * @param {*} arr 原始数据
+ * @returns 
+ */
+function sortByPinYin(arr) {
+    if (!arr) return;
+    arr.sort((a, b) => a.label.localeCompare(b.label, 'zh'))
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].children) {
+            arr[i].children = sortByPinYin(arr[i].children)
+        }
+    }
+    return arr
+}

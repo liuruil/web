@@ -1,6 +1,6 @@
-#  try catch 
+# try catch
 
-> 它只能是同步的，无法用于异步代码模式 
+> 它只能是同步的，无法用于异步代码模式
 
 ```javascript
 function foo() {
