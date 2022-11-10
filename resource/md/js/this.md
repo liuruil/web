@@ -20,7 +20,7 @@
 
 ###  null 或者 undefined 
 
->null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind,这些值 在调用时会被忽略，实际应用的是默认绑定规则
+>非严格模式下，null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind,这些值 在调用时会被忽略，实际应用的是默认绑定规则
 
 ```javascript
 // 把数组“展开”成参数 foo.apply( null, [2, 3] ); // a:2, b:3
