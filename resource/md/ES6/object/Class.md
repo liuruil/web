@@ -22,7 +22,8 @@
 ```js
 class User {
   constructor(name, age) {
-    (this.name = name), (this.age = age); //调用set age()
+    this.name = name
+    this.age = age //调用set age()
   }
   //创建一个age存取器属性
   get age() {
@@ -40,6 +41,7 @@ class User {
 ```js
 class User{
     static type = 'person'
+
     static methods(){
         console.log('这是User的静态方法')
     }
