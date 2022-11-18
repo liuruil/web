@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        text-align: center;
+    }
+
+    input {
+        height: 30px;
+        margin: 20px;
+    }
+
+    table {
+        text-align: center;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 1px solid #c0c0c0;
+        width: 500px;
+        margin: 100px auto;
+    }
+
+    th {
+        background-color: skyblue;
+        font: bold 16px "微软雅黑";
+        color: #fff;
+        height: 24px;
+    }
+
+    td {
+        border: 1px solid #d0d0d0;
+        color: #404060;
+        padding: 10px;
+    }
+</style>
+
+<body>
+    <div>
+        <form id="f1">
+            商品名:<input type="text" class="goods" name="uname">
+            价格:<input type="text" class="price" name="price">
+            数量:<input type="text" class="num" name="num">
+            <button type="submit">添加</button>
+        </form>
+    </div>
+    <table>
+        <tr>
+            <th>商品名</th>
+            <th>价格</th>
+            <th>数量</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td>可口可乐</td>
+            <td>3</td>
+            <td>1</td>
+            <td class="del">删除</td>
+        </tr>
+        <tr>
+            <td>百世可乐</td>
+            <td>3</td>
+            <td>1</td>
+            <td class="del">删除</td>
+        </tr>
+        <tr>
+            <td>德芙</td>
+            <td>20</td>
+            <td>2</td>
+            <td class="del">删除</td>
+        </tr>
+        <tr>
+            <td>阿尔卑斯棒棒糖</td>
+            <td>1</td>
+            <td>10</td>
+            <td class="del">删除</td>
+        </tr>
+    </table>
+</body>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+    $(function () {
+        $('#f1').on('submit', function (e) {
+            e.preventDefault()
+            let data = $(this).serialize()
+            console.log(data);
+        })
+    })
+    // 实现删除功能
+</script>
+
+</html>
