@@ -213,3 +213,33 @@ addTask(1000, 1)
 addTask(500, 2)
 addTask(300, 3)
 addTask(400, 4)
+
+//5. 判断两个对象是否相同
+var obj1 = { b: 2, a: 1, c: { a: 1, b: 2, d: { a: 1 } } };
+var obj2 = { a: 1, b: 2, c: { b: 2, a: 1, d: { a: 0 } } };
+const isObject = (item) =>
+  Object.prototype.toString.call(item) === "[object Object]";
+function equals(a, b) {
+  console.log(a, b);
+  if (isObject(a) && isObject(b)) {
+    const keys1 = Object.keys(a),
+      keys2 = Object.keys(b);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const iterator of keys1) {
+      if (!keys2.includes(iterator)) {
+        return false;
+      }
+    }
+    for (const iterator of keys1) {
+      if (!equals(a[iterator], b[iterator])) {
+        return false;
+      }
+    }
+    return true;
+  } else {
+    return a === b;
+  }
+}
+console.log(equals(obj1, obj2));
