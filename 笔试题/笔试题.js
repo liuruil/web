@@ -243,3 +243,21 @@ function equals(a, b) {
   }
 }
 console.log(equals(obj1, obj2));
+
+//6. 数组去重(改变原数组) 
+var arr = [1, 2, 3, 2, 3, 3, 3, 3]; 
+
+function test(arr) {
+  // [1, 2, 3, 3]
+  for (let i = 0; i < arr.length; i++) {
+    if (arr.indexOf(arr[i]) !== i) {
+      //判断这个数据是不是重复的数据
+      arr.splice(i--, 1);
+    }
+  }
+  return arr;
+}
+
+console.log(test(arr)); // [1,2,3]
+
+console.log(test(arr) === arr); //true
