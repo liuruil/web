@@ -25,26 +25,31 @@ function* demo2() {
 }
 
 function asyncGenerator(generator) {
-  function handleValue(gen, resolve, result) {
-    if (result.done) {
-      return resolve(result.value);
+  function _step(gen, key, resolve, reject, val) {
+    try {
+      const { value, done } = gen[key](val);
+      if (done) return resolve(value);
+      Promise.resolve(value).then(
+        (res) => {
+          _step(gen, "next", resolve, reject, res);
+        },
+        (err) => {
+          _step(gen, "throw", resolve, reject, err);
+        }
+      );
+    } catch (error) {
+      reject(error);
     }
-    Promise.resolve(result.value).then((res) => {
-      const result = gen.next(res);
-      handleValue(gen, resolve, result);
-    });
   }
   return function () {
     //得到生成器
     const gen = generator();
-
-    return new Promise((resolve) => {
-      const result = gen.next();
-      handleValue(gen, resolve, result);
+    return new Promise((resolve, reject) => {
+      _step(gen, "next", resolve, reject);
     });
   };
 }
 
 const asyncFunc = asyncGenerator(demo2); //模拟 demo1
 var result = asyncFunc();
-result.then(console.log);
+result.then(console.log, console.log);
