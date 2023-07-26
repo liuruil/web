@@ -44,7 +44,7 @@ class Test {
     console.log(this);
   }
 
-  // 方法箭头函数中的this指向类本身
+  // 普通方法箭头函数中的this默认指向类本身
   saySpecial = () => {
     console.log(this);
   };
