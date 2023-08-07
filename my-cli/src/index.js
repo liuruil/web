@@ -3,14 +3,14 @@ const chalk = require("chalk");
 const inquirer = require("inquirer");
 const ora = require("ora");
 const logSymbols = require("log-symbols");
-
-// const { downloadRepos } = require("./api/index");
-const { addCommand } = require("./command/index");
-console.log(logSymbols.success, "daskjfanskjf");
-// (async () => {
-//   await downloadRepos("web#main", "aaa");
-//   console.log("完成了");
-// })();
+const { getMyAllRepos, downloadRepos } = require("./api/index");
+// const { addCommand } = require("./command/index");
+// console.log(logSymbols.success, "daskjfanskjf");
+(async () => {
+  const res = await getMyAllRepos();
+  //   await downloadRepos("web#main", "aaa");
+  console.log(res);
+})();
 console.log("🔍");
 // program
 //   .name("leo")

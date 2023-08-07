@@ -190,3 +190,37 @@ function sortByPinYin(arr) {
     }
     return arr
 }
+
+/**
+ * 创建动画函数
+ * @param {Object} options 配置对象
+ * @param {Number} options.to 目标值
+ * @param {Number} options.from 初始值
+ * @param {Number} options.totolMS 运动时间 默认一秒
+ * @param {Number} options.duration 每次运动间隔时间 默认15ms
+ * @param {Function} options.onmove 每次运动执行的函数[参数是当前值]
+ * @param {Function} options.onend 运动结束执行的函数
+ */
+function createAnimation(options) {
+    var from = options.from; // 起始值
+    var to = options.to; // 结束值
+    var totalMS = options.totalMS || 1000; // 变化总时间
+    var duration = options.duration || 15; // 动画间隔时间
+    var times = Math.floor(totalMS / duration); // 变化的次数
+    var dis = (to - from) / times; // 每一次变化改变的值
+    var curTimes = 0; // 当前变化的次数
+    var timerId = setInterval(function () {
+        from += dis;
+        curTimes++; // 当前变化增加一次
+        if (curTimes >= times) {
+            // 变化的次数达到了
+            from = to; // 变化完成了
+            clearInterval(timerId); // 不再变化了
+            options.onmove && options.onmove(from);
+            options.onend && options.onend();
+            return;
+        }
+        // 无数的可能性
+        options.onmove && options.onmove(from);
+    }, duration);
+}

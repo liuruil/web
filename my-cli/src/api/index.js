@@ -2,7 +2,7 @@ const ora = require("ora");
 const { Octokit } = require("octokit");
 const downloadResource = require("download-git-repo");
 const octokit = new Octokit({
-  auth: "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",
+  auth: "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",
 });
 
 /**
