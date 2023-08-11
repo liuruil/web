@@ -220,7 +220,6 @@ var obj2 = { a: 1, b: 2, c: { b: 2, a: 1, d: { a: 0 } } };
 const isObject = (item) =>
   Object.prototype.toString.call(item) === "[object Object]";
 function equals(a, b) {
-  console.log(a, b);
   if (isObject(a) && isObject(b)) {
     const keys1 = Object.keys(a),
       keys2 = Object.keys(b);

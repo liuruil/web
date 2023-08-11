@@ -19,8 +19,8 @@ function delay(time) {
 
 function* demo2() {
   const data1 = yield delay(1000);
-  const data2 = yield delay(3000);
-  const data3 = yield delay(5000);
+  const data2 = yield delay(2000);
+  const data3 = yield delay(3000);
   return data1 + data2 + data3;
 }
 
@@ -51,5 +51,7 @@ function asyncGenerator(generator) {
 }
 
 const asyncFunc = asyncGenerator(demo2); //模拟 demo1
+
 var result = asyncFunc();
+
 result.then(console.log, console.log);
